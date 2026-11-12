@@ -1,0 +1,2 @@
+import User from '../models/User.js';import Property from '../models/Property.js';import Booking from '../models/Booking.js';
+export const stats=async(_,res)=>res.json({users:await User.countDocuments(),properties:await Property.countDocuments(),bookings:await Booking.countDocuments(),revenue:(await Booking.aggregate([{$match:{paymentStatus:'paid'}},{$group:{_id:null,total:{$sum:'$totalPrice'}}}]))[0]?.total||0});

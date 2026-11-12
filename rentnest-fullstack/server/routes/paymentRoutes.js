@@ -1,0 +1,1 @@
+import {Router} from 'express';import * as c from '../controllers/paymentController.js';import {protect} from '../middleware/auth.js';const r=Router();r.post('/:bookingId/intent',protect,c.createIntent);r.post('/:bookingId/mark-paid',protect,c.markPaid);export default r;

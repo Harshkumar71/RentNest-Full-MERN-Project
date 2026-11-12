@@ -1,0 +1,3 @@
+import Review from '../models/Review.js';import Property from '../models/Property.js';
+export const listReviews=async(req,res)=>res.json(await Review.find({property:req.params.propertyId}).populate('customer','name avatar').sort('-createdAt'));
+export const addReview=async(req,res)=>{try{const r=await Review.create({property:req.params.propertyId,customer:req.user._id,...req.body});const all=await Review.find({property:req.params.propertyId});const avg=all.reduce((s,x)=>s+x.rating,0)/all.length;await Property.findByIdAndUpdate(req.params.propertyId,{averageRating:avg,ratingCount:all.length});res.status(201).json(r)}catch(e){res.status(400).json({message:e.code===11000?'You already reviewed this property':e.message})}};

@@ -1,0 +1,2 @@
+import {Link} from 'react-router-dom';
+export default function PropertyCard({p}){return <article className="property-card"><img src={p.images?.[0]||'https://placehold.co/700x450?text=No+Image'} /><div><span className="tag">{p.type}</span><h3>{p.title}</h3><p>{p.location?.city}, {p.location?.state}</p><p>⭐ {Number(p.averageRating||0).toFixed(1)} ({p.ratingCount||0})</p><strong>₹{p.pricePerNight.toLocaleString()}/night</strong><Link className="btn small" to={'/properties/'+p._id}>View</Link></div></article>}

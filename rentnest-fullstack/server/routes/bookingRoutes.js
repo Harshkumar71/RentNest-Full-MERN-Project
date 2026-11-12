@@ -1,0 +1,11 @@
+import { Router } from 'express';
+import * as controller from '../controllers/bookingController.js';
+import { protect, roles } from '../middleware/auth.js';
+const router = Router();
+router.post('/', protect, roles('customer'), controller.createBooking);
+router.get('/my', protect, roles('customer'), controller.customerBookings);
+router.get('/owner', protect, roles('owner'), controller.ownerBookings);
+router.get('/admin', protect, roles('admin'), controller.adminBookings);
+router.patch('/:id/status', protect, controller.updateStatus);
+router.patch('/:id/payment-status', protect, roles('owner', 'admin'), controller.updatePaymentStatus);
+export default router;

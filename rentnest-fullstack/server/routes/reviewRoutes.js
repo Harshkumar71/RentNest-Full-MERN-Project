@@ -1,0 +1,1 @@
+import {Router} from 'express';import * as c from '../controllers/reviewController.js';import {protect,roles} from '../middleware/auth.js';const r=Router();r.get('/:propertyId',c.listReviews);r.post('/:propertyId',protect,roles('customer'),c.addReview);export default r;

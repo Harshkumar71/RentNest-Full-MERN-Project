@@ -1,0 +1,1 @@
+import {Router} from 'express';import {stats} from '../controllers/adminController.js';import {protect,roles} from '../middleware/auth.js';const r=Router();r.get('/stats',protect,roles('admin'),stats);export default r;

@@ -1,0 +1,4 @@
+import Stripe from 'stripe';import Booking from '../models/Booking.js';
+const stripe=process.env.STRIPE_SECRET_KEY?new Stripe(process.env.STRIPE_SECRET_KEY):null;
+export const createIntent=async(req,res)=>{if(!stripe)return res.status(503).json({message:'Add STRIPE_SECRET_KEY to enable payments'});const b=await Booking.findOne({_id:req.params.bookingId,customer:req.user._id});if(!b)return res.status(404).json({message:'Booking not found'});const intent=await stripe.paymentIntents.create({amount:Math.round(b.totalPrice*100),currency:'inr',metadata:{bookingId:String(b._id)}});res.json({clientSecret:intent.client_secret})};
+export const markPaid=async(req,res)=>{const b=await Booking.findOne({_id:req.params.bookingId,customer:req.user._id});if(!b)return res.status(404).json({message:'Booking not found'});b.paymentStatus='paid';b.paymentId=req.body.paymentId||'manual-demo';b.status='confirmed';res.json(await b.save())};
